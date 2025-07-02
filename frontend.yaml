@@ -13,7 +13,7 @@
         name: nginx
         state: present
 
-    - name: start and enable mongodb 
+    - name: start and enable frontend 
       ansible.builtin.service:
         name: frontend 
         state: started
@@ -41,18 +41,25 @@
         dest: /usr/share/nginx/html 
         remote_src: yes # means files already exist in frontend service
 
-    - name: install dependencies
-      community.general.npm:
-        path: /app
+    - name: remove default nginx path
+      ansible.builtin.file:
+        path : /etc/nginx/nginx.conf
+        state: absent
 
-    - name: copy catalouge service to sysytem directory
+    - name: copy roboshop nginx conf
       ansible.builtin.copy:
-        src: frontend.service
-        dest: /etc/systemd/system/frontend.service
+        src: nginx.conf
+        dest: /etc/nginx/nginx.conf
 
-    - name: deamon reload
-      ansible.builtin.systemd_service:
-        daemon_reload: true
+    - name: start and enable frontend 
+      ansible.builtin.service:
+        name: frontend 
+        state: restarted
+      
+
+
+
+  
 
     
 
