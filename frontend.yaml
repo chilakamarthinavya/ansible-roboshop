@@ -13,9 +13,9 @@
         name: nginx
         state: present
 
-    - name: start and enable frontend 
+    - name: start and enable nginx 
       ansible.builtin.service:
-        name: frontend 
+        name: nginx 
         state: started
         enabled: yes
 
